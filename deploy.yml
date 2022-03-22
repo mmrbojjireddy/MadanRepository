@@ -18,7 +18,7 @@
     stat:
       path: /usr/share/tomcat/webapps/hello-world-servlet-example
     register: stat_result
-  - name: Delete the GAMEOFLIFE dir, if it exist already
+  - name: Delete the hello-world-servlet-example dir, if it exist already
     file:
       path: /usr/share/tomcat/webapps/hello-world-servlet-example
       state: absent

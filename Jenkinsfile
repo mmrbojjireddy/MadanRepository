@@ -12,7 +12,7 @@ stages {
 
       // Get some code from a GitHub repository
 
-      git 'https://github.com/mmrbojjireddy/MadanRepository'
+      git 'https://github.com/raknas999/hello-world-servlet.git'
 
       // Get the Maven tool.
      
@@ -43,10 +43,10 @@ stages {
  }
  stage('Sonarqube') {
     environment {
-        scannerHome = tool 'Sonarqube'
+        scannerHome = tool 'sonarqube'
     }
     steps {
-        withSonarQubeEnv('Sonarqube') {
+        withSonarQubeEnv('sonarqube') {
             sh "${scannerHome}/bin/sonar-scanner"
         }
   //      timeout(time: 10, unit: 'MINUTES') {
@@ -56,7 +56,7 @@ stages {
 }
      stage('Artifact upload') {
       steps {
-     nexusPublisher nexusInstanceId: '12345', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: 'target/helloworld.war', extension: '', filePath: '']], mavenCoordinate: [artifactId: 'hello-world-servlet-example', groupId: 'com.geekcap.vmturbo', packaging: 'war', version: '$BUILD_NUMBER']]]
+      nexusPublisher nexusInstanceId: '12345', nexusRepositoryId: 'releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'target/helloworld.war']], mavenCoordinate: [artifactId: 'hello-world-servlet-example', groupId: 'com.geekcap.vmturbo', packaging: 'war', version: '$BUILD_NUMBER']]]
       }
  }
      stage('Deploy War') {
@@ -64,5 +64,13 @@ stages {
         sh label: '', script: 'ansible-playbook deploy.yml'
       }
  }
-}      
+}
+// post {
+   //     success {
+    //       mail to:"raknas000@gmail.com", subject:"SUCCESS: ${currentBuild.fullDisplayName}", body: "Build success"
+     //   }
+      //  failure {
+        //    mail to:"raknas000@gmail.com", subject:"FAILURE: ${currentBuild.fullDisplayName}", body: "Build failed"
+       // }
+    // }       
 }
